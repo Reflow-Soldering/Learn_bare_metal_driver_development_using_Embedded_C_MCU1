@@ -1,0 +1,52 @@
+22:06:03 **** Build of configuration Debug for project 002. Sample App ****
+make -j12 all 
+arm-none-eabi-gcc -mcpu=cortex-m4 -g3 -DDEBUG -c -x assembler-with-cpp -MMD -MP -MF"Startup/startup_stm32f407vgtx.d" -MT"Startup/startup_stm32f407vgtx.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Startup/startup_stm32f407vgtx.o" "../Startup/startup_stm32f407vgtx.s"
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DSTM32 -DSTM32F407G_DISC1 -DSTM32F4 -DSTM32F407VGTx -c -I../Inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc "../Src/syscalls.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DSTM32 -DSTM32F407G_DISC1 -DSTM32F4 -DSTM32F407VGTx -c -I../Inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/syscalls.d" -MT"Src/syscalls.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Src/syscalls.o"
+arm-none-eabi-gcc "../Src/sysmem.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DSTM32 -DSTM32F407G_DISC1 -DSTM32F4 -DSTM32F407VGTx -c -I../Inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/sysmem.d" -MT"Src/sysmem.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Src/sysmem.o"
+arm-none-eabi-gcc -o "002. Sample App.elf" @"objects.list"   -mcpu=cortex-m4 -T"H:\udemy\MCU1\Learn_bare_metal_driver_development_using_Embedded_C_MCU1\002. Sample App\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="002. Sample App.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: 002. Sample App.elf
+ 
+arm-none-eabi-size  002.\ Sample\ App.elf 
+arm-none-eabi-objdump -h -S 002.\ Sample\ App.elf  > "002. Sample App.list"
+   text	   data	    bss	    dec	    hex	filename
+   6208	    164	   1900	   8272	   2050	002. Sample App.elf
+Finished building: default.size.stdout
+ 
+Finished building: 002. Sample App.list
+ 
+22:07:30 **** Incremental Build of configuration Debug for project 001. Hello World ****
+make -j12 all 
+arm-none-eabi-size  001.\ Hello\ World.elf 
+   text	   data	    bss	    dec	    hex	filename
+   3384	     92	   1900	   5376	   1500	001. Hello World.elf
+Finished building: default.size.stdout
+ 
+22:08:35 **** Incremental Build of configuration Debug for project 002. Sample App ****
+make -j12 all 
+arm-none-eabi-size  002.\ Sample\ App.elf 
+   text	   data	    bss	    dec	    hex	filename
+   6208	    164	   1900	   8272	   2050	002. Sample App.elf
+Finished building: default.size.stdout
+ 
+22:22:09 **** Incremental Build of configuration Debug for project 001. Hello World ****
+make -j12 all 
+arm-none-eabi-size  001.\ Hello\ World.elf 
+   text	   data	    bss	    dec	    hex	filename
+   3384	     92	   1900	   5376	   1500	001. Hello World.elf
+Finished building: default.size.stdout
+ 
+22:22:28 **** Incremental Build of configuration Debug for project 001. Hello World ****
+make -j12 all 
+arm-none-eabi-size  001.\ Hello\ World.elf 
+   text	   data	    bss	    dec	    hex	filename
+   3384	     92	   1900	   5376	   1500	001. Hello World.elf
+Finished building: default.size.stdout
+ 
+22:22:48 **** Incremental Build of configuration Debug for project 002. Sample App ****
+make -j12 all 
+arm-none-eabi-size  002.\ Sample\ App.elf 
+   text	   data	    bss	    dec	    hex	filename
+   6208	    164	   1900	   8272	   2050	002. Sample App.elf
+Finished building: default.size.stdout
+ 
