@@ -166,10 +166,10 @@
 /* GPIO Structure*/
 typedef struct
 {
-	__vo uint32_t MODER;								//Input, Output, Analog, Alternative Function Select Register
+	__vo uint32_t MODER;							//Input, Output, Analog, Alternative Function Select Register
 	__vo uint32_t OTYPER;							//If some pins are selected output, define register used by output type
 	__vo uint32_t OSPEEDR;							//If GPIO is configured by output, Speed configure register
-	__vo uint32_t PUPDR;								//GPIO Pull-up, Pull-down Register
+	__vo uint32_t PUPDR;							//GPIO Pull-up, Pull-down Register
 	__vo uint32_t IDR;								//GPIO Input data register, read word only
 	__vo uint32_t ODR;								//GPIO Output Data register. Can read and write. Can change used by BSRR register
 	__vo uint32_t BSRR;								//Port x reset, set bit
@@ -244,30 +244,30 @@ typedef struct
  * Clock Enable Macro GPIOx
  * GPIO에 클럭을 활성화하는 매크로 작성
  */
-#define	GIOA_PCLK_EN()				(RCC->AHB1ENR |= (1 << 0))	//GPIOA Enable
-#define	GIOB_PCLK_EN()				(RCC->AHB1ENR |= (1 << 1))	//GPIOB Enable
-#define	GIOC_PCLK_EN()				(RCC->AHB1ENR |= (1 << 2))	//GPIOC Enable
-#define	GIOD_PCLK_EN()				(RCC->AHB1ENR |= (1 << 3))	//GPIOD Enable
-#define	GIOE_PCLK_EN()				(RCC->AHB1ENR |= (1 << 4))	//GPIOE Enable
-#define	GIOF_PCLK_EN()				(RCC->AHB1ENR |= (1 << 5))	//GPIOF Enable
-#define	GIOG_PCLK_EN()				(RCC->AHB1ENR |= (1 << 6))	//GPIOG Enable
-#define	GIOH_PCLK_EN()				(RCC->AHB1ENR |= (1 << 7))	//GPIOH Enable
-#define	GIOI_PCLK_EN()				(RCC->AHB1ENR |= (1 << 8))	//GPIOI Enable
+#define	GPIOA_PCLK_EN()				(RCC->AHB1ENR |= (1 << 0))	//GPIOA Enable
+#define	GPIOB_PCLK_EN()				(RCC->AHB1ENR |= (1 << 1))	//GPIOB Enable
+#define	GPIOC_PCLK_EN()				(RCC->AHB1ENR |= (1 << 2))	//GPIOC Enable
+#define	GPIOD_PCLK_EN()				(RCC->AHB1ENR |= (1 << 3))	//GPIOD Enable
+#define	GPIOE_PCLK_EN()				(RCC->AHB1ENR |= (1 << 4))	//GPIOE Enable
+#define	GPIOF_PCLK_EN()				(RCC->AHB1ENR |= (1 << 5))	//GPIOF Enable
+#define	GPIOG_PCLK_EN()				(RCC->AHB1ENR |= (1 << 6))	//GPIOG Enable
+#define	GPIOH_PCLK_EN()				(RCC->AHB1ENR |= (1 << 7))	//GPIOH Enable
+#define	GPIOI_PCLK_EN()				(RCC->AHB1ENR |= (1 << 8))	//GPIOI Enable
 
 
 /*
  * Clock Disable Macro GPIOx
  * GPIO에 클럭을 비활성화 하는 매크로 작성
  */
-#define	GIOA_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 0))	//GPIOA Disable
-#define	GIOB_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 1))	//GPIOB Disable
-#define	GIOC_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 2))	//GPIOC Disable
-#define	GIOD_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 3))	//GPIOD Disable
-#define	GIOE_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 4))	//GPIOE Disable
-#define	GIOF_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 5))	//GPIOF Disable
-#define	GIOG_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 6))	//GPIOG Disable
-#define	GIOH_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 7))	//GPIOH Disable
-#define	GIOI_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 8))	//GPIOI Disable
+#define	GPIOA_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 0))	//GPIOA Disable
+#define	GPIOB_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 1))	//GPIOB Disable
+#define	GPIOC_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 2))	//GPIOC Disable
+#define	GPIOD_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 3))	//GPIOD Disable
+#define	GPIOE_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 4))	//GPIOE Disable
+#define	GPIOF_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 5))	//GPIOF Disable
+#define	GPIOG_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 6))	//GPIOG Disable
+#define	GPIOH_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 7))	//GPIOH Disable
+#define	GPIOI_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 8))	//GPIOI Disable
 
 /*
  * Clock Enable I2C Peripheral Enable
@@ -326,6 +326,24 @@ typedef struct
 #define USART6_PCLK_DI()			(RCC->APB2ENR &= ~(1<<5))
 
 
+
+/*
+ * GPIO 포트를 초기화하는 매크로
+ * do while 루프를 사용하여 2개 이상의 명령어를 실행할 수 있게 한다
+ * 이 경우 while(0)이면 do 이후의 코드를 실행하고
+ * while을 확인하여 false이기 때문에 while루프가 돌지 않음. 결국 한 번만 실행된다.
+ */
+#define GPIOA_REG_RESET()			do{ (RCC->AHB1RSTR |= (1<<0)); (RCC->AHB1RSTR &= ~(1<<0)); }while(0)
+#define GPIOB_REG_RESET()			do{ (RCC->AHB1RSTR |= (1<<1)); (RCC->AHB1RSTR &= ~(1<<1)); }while(0)
+#define GPIOC_REG_RESET()			do{ (RCC->AHB1RSTR |= (1<<2)); (RCC->AHB1RSTR &= ~(1<<2)); }while(0)
+#define GPIOD_REG_RESET()			do{ (RCC->AHB1RSTR |= (1<<3)); (RCC->AHB1RSTR &= ~(1<<3)); }while(0)
+#define GPIOE_REG_RESET()			do{ (RCC->AHB1RSTR |= (1<<4)); (RCC->AHB1RSTR &= ~(1<<4)); }while(0)
+#define GPIOF_REG_RESET()			do{ (RCC->AHB1RSTR |= (1<<5)); (RCC->AHB1RSTR &= ~(1<<5)); }while(0)
+#define GPIOG_REG_RESET()			do{ (RCC->AHB1RSTR |= (1<<6)); (RCC->AHB1RSTR &= ~(1<<6)); }while(0)
+#define GPIOH_REG_RESET()			do{ (RCC->AHB1RSTR |= (1<<7)); (RCC->AHB1RSTR &= ~(1<<7)); }while(0)
+#define GPIOI_REG_RESET()			do{ (RCC->AHB1RSTR |= (1<<8)); (RCC->AHB1RSTR &= ~(1<<8)); }while(0)
+
+
 /*
  * Clock Enable SYSCLK
  *
@@ -346,5 +364,12 @@ typedef struct
 #define RESET						DISABLE
 #define GPIO_PIN_SET				SET
 #define GPIO_PIN_RESET				RESET
+
+/*
+ * 종속 되어있는 헤더 파일일 경우
+ * 맨 마지막에 include해주어도 가능
+ */
+
+#include "stm32f407xx_gpio_driver.h"
 
 #endif /* INC_STM32F407XX_H_ */

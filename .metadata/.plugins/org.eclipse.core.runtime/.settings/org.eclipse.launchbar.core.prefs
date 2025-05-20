@@ -1,7 +1,9 @@
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/arch=x86_64
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/name=Local
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/os=win32
-configDescList=org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:001. Hello World,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:002. Sample App
+configDescList=org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:stm32f4xx_drivers
 eclipse.preferences.version=1
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:001.\ Hello\ World/activeLaunchMode=debug
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:001.\ Hello\ World/activeLaunchTarget=null\:---
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:stm32f4xx_drivers/activeLaunchMode=run
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:stm32f4xx_drivers/activeLaunchTarget=null\:---
