@@ -14,12 +14,88 @@
  * 규정하므로 반드시 필요하다
  */
 #include <stdint.h>
-
+#include <memory.h>
 //volatile define
 /*
  * 일일히 volatile을 쓸 수 없으므로 약어로 정리
  */
 #define __vo									volatile
+
+/*********************************프로세서 스펙 상세******************************
+ *
+ * ARM Cortex Mx 프로세서 NVIC ISERx 레지스터 주소
+ * NVIC ISER은 0부터 7까지 8개가 있음
+ *
+ * 해당 내용은 Cortex-M4 Devices Generic User Guide 참조할 것
+ * Table 4-2
+ */
+
+//NVIC Interrupt Set Enable 레지스터
+#define	NVIC_ISER0							((__vo uint32_t *)0xE000E100)
+#define	NVIC_ISER1							((__vo uint32_t *)0xE000E104)
+#define	NVIC_ISER2							((__vo uint32_t *)0xE000E108)
+#define	NVIC_ISER3							((__vo uint32_t *)0xE000E10C)
+#define	NVIC_ISER4							((__vo uint32_t *)0xE000E110)
+#define	NVIC_ISER5							((__vo uint32_t *)0xE000E114)
+#define	NVIC_ISER6							((__vo uint32_t *)0xE000E118)
+#define	NVIC_ISER7							((__vo uint32_t *)0xE000E11C)
+
+//NVIC Interrupt Clear Enable 레지스터
+#define NVIC_ICER0							((__vo uint32_t *)0XE000E180)
+#define NVIC_ICER1							((__vo uint32_t *)0XE000E184)
+#define NVIC_ICER2							((__vo uint32_t *)0XE000E188)
+#define NVIC_ICER3							((__vo uint32_t *)0XE000E18C)
+#define NVIC_ICER4							((__vo uint32_t *)0XE000E190)
+#define NVIC_ICER5							((__vo uint32_t *)0XE000E194)
+#define NVIC_ICER6							((__vo uint32_t *)0XE000E198)
+#define NVIC_ICER7							((__vo uint32_t *)0XE000E19C)
+
+#define NVIC_PR_BASE_ADDR					((__vo uint32_t *)0xE000E400)
+
+#define NO_PR_BITS_IMPLEMENTED				4
+
+//NVIC Interrupt Set-Pendinf 레지스터
+/*
+#define NVIC_ISPR0							((__vo uint32_t *)0XE000E200)
+#define NVIC_ISPR1							((__vo uint32_t *)0XE000E204)
+#define NVIC_ISPR2							((__vo uint32_t *)0XE000E208)
+#define NVIC_ISPR3							((__vo uint32_t *)0XE000E20C)
+#define NVIC_ISPR4							((__vo uint32_t *)0XE000E210)
+#define NVIC_ISPR5							((__vo uint32_t *)0XE000E214)
+#define NVIC_ISPR6							((__vo uint32_t *)0XE000E218)
+#define NVIC_ISPR7							((__vo uint32_t *)0XE000E21C)
+*/
+
+
+//NVIC Interrupt Clear-Pending 레지스터
+/*
+#define NVIC_ICPR0							((__vo uint32_t *)0XE000E280)
+#define NVIC_ICPR1							((__vo uint32_t *)0XE000E284)
+#define NVIC_ICPR2							((__vo uint32_t *)0XE000E288)
+#define NVIC_ICPR3							((__vo uint32_t *)0XE000E28C)
+#define NVIC_ICPR4							((__vo uint32_t *)0XE000E290)
+#define NVIC_ICPR5							((__vo uint32_t *)0XE000E294)
+#define NVIC_ICPR6							((__vo uint32_t *)0XE000E298)
+#define NVIC_ICPR7							((__vo uint32_t *)0XE000E29C)
+*/
+
+//NVIC Interrupt Active Bit 레지스터
+/*
+#define NVIC_IABR0							((__vo uint32_t *)0XE000E300)
+#define NVIC_IABR1							((__vo uint32_t *)0XE000E304)
+#define NVIC_IABR2							((__vo uint32_t *)0XE000E308)
+#define NVIC_IABR3							((__vo uint32_t *)0XE000E30C)
+#define NVIC_IABR4							((__vo uint32_t *)0XE000E310)
+#define NVIC_IABR5							((__vo uint32_t *)0XE000E314)
+#define NVIC_IABR6							((__vo uint32_t *)0XE000E318)
+#define NVIC_IABR7							((__vo uint32_t *)0XE000E31C)
+*/
+
+//NVIC Interrupt Priority 레지스터
+
+
+//NVIC Interrupt 소프트웨어 트리거 인터럽트 레지스터
+#define NVIC_STIR							((__vo uint32_t *)0XE000E41C)
 
 /*This is address list of Memory*/
 /*
@@ -62,13 +138,14 @@
 #define GPIOF_BASEADDR							(AHB1PHERIPH_BASE + 0x1400)
 #define GPIOG_BASEADDR							(AHB1PHERIPH_BASE + 0x1800)
 #define GPIOH_BASEADDR							(AHB1PHERIPH_BASE + 0x1C00)
-#define GPIOI_BASEADDR							(AHB1PHERIPH_BASE + 0x2000)
+//#define GPIOI_BASEADDR							(AHB1PHERIPH_BASE + 0x2000)
 
 /*RCC 시작주소 지정*/
 /*
  * GPIO 세팅때문에 미리 하나 만들어둠
  */
 #define RCC_BASEADDR							(AHB1PHERIPH_BASE + 0x3800)
+
 
 
 /****************************** 주변장치 그룹화 ******************************
@@ -219,11 +296,46 @@ typedef struct
 	__vo uint32_t DCKCFGR;
 }RCC_RegDef_t;
 
+/*EXTI 구조체*/
+typedef struct
+{
+	__vo uint32_t IMR;
+	__vo uint32_t EMR;
+	__vo uint32_t RTSR;
+	__vo uint32_t FTSR;
+	__vo uint32_t SWIER;
+	__vo uint32_t PR;
+}EXTI_RegDef_t;
+
+/*SYSCFG 레지스터 구조체*/
+typedef struct
+{
+	__vo uint32_t MEMRMP;
+	__vo uint32_t PMC;
+	__vo uint32_t EXTICR[4];
+	uint32_t Reserved[2];
+	__vo uint32_t CMPCR;
+}SYSCFG_RegDef_t;
+
 /*SPI 레지스터 구조체*/
 typedef struct
 {
-//	__vo uint32_t ABC;
+	__vo uint32_t CR1;
+	__vo uint32_t CR2;
+	__vo uint32_t SR;
+	__vo uint32_t DR;
+	__vo uint32_t CRCPR;			//CRC Polynomial Register
+	__vo uint32_t RXCRCR;			//CRC Register
+	__vo uint32_t TXCRCR;
+	__vo uint32_t I2SCFGR;
+	__vo uint32_t I2SPR;
 }SPI_RegDef_t;
+
+/* SPI 주메모리 지정 */
+#define SPI1									((SPI_RegDef_t *)SPI1_BASEADDR)
+#define SPI2									((SPI_RegDef_t *)SPI2_BASEADDR)
+#define SPI3									((SPI_RegDef_t *)SPI3_BASEADDR)
+#define SPI4									((SPI_RegDef_t *)SPI4_BASEADDR)
 
 /* GPIO Definition*/
 
@@ -235,10 +347,58 @@ typedef struct
 #define GPIOF									((GPIO_RegDef_t *)GPIOF_BASEADDR)
 #define GPIOG									((GPIO_RegDef_t *)GPIOG_BASEADDR)
 #define GPIOH									((GPIO_RegDef_t *)GPIOH_BASEADDR)
-#define GPIOI									((GPIO_RegDef_t *)GPIOI_BASEADDR)
+//#define GPIOI									((GPIO_RegDef_t *)GPIOI_BASEADDR)
 
 /*RCC Definition*/
 #define RCC										((RCC_RegDef_t *)RCC_BASEADDR)
+
+#define EXTI									((EXTI_RegDef_t *)EXTI_BASEADDR)
+
+#define SYSCFG									((SYSCFG_RegDef_t *)SYSCFG_BASEADDR)
+
+
+/*
+ * SPI CR1 매크로
+ */
+#define SPI_CR1_CPHA										0
+#define SPI_CR1_CPOL										1
+#define SPI_CR1_MSTR										2
+#define SPI_CR1_BR											3	//3~5
+#define SPI_CR1_SPE											6
+#define SPI_CR1_LSBFIRST									7
+#define SPI_CR1_SSI											8
+#define SPI_CR1_SSM											9
+#define SPI_CR1_RXONLY										10
+#define SPI_CR1_DFF											11
+#define SPI_CR1_BIDIOE										14
+#define SPI_CR1_BIDIMODE									15
+
+/*
+ * SPI CR2 매크로
+ */
+#define SPI_CR2_SSOE 										0
+#define SPI_CR2_TXDMAEN 									1
+#define SPI_CR2_RXDMAEN										2
+#define SPI_CR2_FRF											4
+#define SPI_CR2_ERRIE										5
+#define SPI_CR2_RXEIE										6
+#define SPI_CR2_TXEIE										7
+
+
+/*
+ * SPI SR 매크로
+ */
+#define SPI_SR_RXNE											0
+#define SPI_SR_TXE											1
+#define SPI_SR_CHSIDE										2
+#define SPI_SR_UDR											3
+#define SPI_SR_CRCERR										4
+#define SPI_SR_MODF											5
+#define SPI_SR_OVR											6
+#define SPI_SR_BSY											7
+#define SPI_SR_FRE											8
+
+
 
 /*
  * Clock Enable Macro GPIOx
@@ -252,7 +412,7 @@ typedef struct
 #define	GPIOF_PCLK_EN()				(RCC->AHB1ENR |= (1 << 5))	//GPIOF Enable
 #define	GPIOG_PCLK_EN()				(RCC->AHB1ENR |= (1 << 6))	//GPIOG Enable
 #define	GPIOH_PCLK_EN()				(RCC->AHB1ENR |= (1 << 7))	//GPIOH Enable
-#define	GPIOI_PCLK_EN()				(RCC->AHB1ENR |= (1 << 8))	//GPIOI Enable
+//#define	GPIOI_PCLK_EN()				(RCC->AHB1ENR |= (1 << 8))	//GPIOI Enable
 
 
 /*
@@ -267,7 +427,7 @@ typedef struct
 #define	GPIOF_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 5))	//GPIOF Disable
 #define	GPIOG_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 6))	//GPIOG Disable
 #define	GPIOH_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 7))	//GPIOH Disable
-#define	GPIOI_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 8))	//GPIOI Disable
+//#define	GPIOI_PCLK_DI()				(RCC->AHB1ENR &= ~(1 << 8))	//GPIOI Disable
 
 /*
  * Clock Enable I2C Peripheral Enable
@@ -341,8 +501,50 @@ typedef struct
 #define GPIOF_REG_RESET()			do{ (RCC->AHB1RSTR |= (1<<5)); (RCC->AHB1RSTR &= ~(1<<5)); }while(0)
 #define GPIOG_REG_RESET()			do{ (RCC->AHB1RSTR |= (1<<6)); (RCC->AHB1RSTR &= ~(1<<6)); }while(0)
 #define GPIOH_REG_RESET()			do{ (RCC->AHB1RSTR |= (1<<7)); (RCC->AHB1RSTR &= ~(1<<7)); }while(0)
-#define GPIOI_REG_RESET()			do{ (RCC->AHB1RSTR |= (1<<8)); (RCC->AHB1RSTR &= ~(1<<8)); }while(0)
+//#define GPIOI_REG_RESET()			do{ (RCC->AHB1RSTR |= (1<<8)); (RCC->AHB1RSTR &= ~(1<<8)); }while(0)
 
+
+/*
+ * SPI 포트 초기화 매크로
+ * GPIO와 같이 do-while 사용할 것
+ *
+ */
+#define SPI1_REG_RESET()			do{ (RCC->APB2RSTR |= (1<<12)); (RCC->APB2RSTR &= ~(1<12)); }while(0)
+#define SPI2_REG_RESET()			do{ (RCC->APB1RSTR |= (1<<14)); (RCC->APB1RSTR &= ~(1<14)); }while(0)
+#define SPI3_REG_RESET()			do{ (RCC->APB1RSTR |= (1<<15)); (RCC->APB1RSTR &= ~(1<15)); }while(0)
+#define SPI4_REG_RESET()			do{ (RCC->APB2RSTR |= (1<<13)); (RCC->APB2RSTR &= ~(1<13)); }while(0)
+
+
+/*인터럽트 넘버 설정
+ * 레퍼런스 매뉴얼 12.2 테이블 확인
+ * Interrupt Request number
+ */
+
+#define IRQ_NO_EXTI0				6
+#define IRQ_NO_EXTI1				7
+#define IRQ_NO_EXTI2				8
+#define IRQ_NO_EXTI3				9
+#define IRQ_NO_EXTI4				10
+#define IRQ_NO_EXTI9_5				23
+#define IRQ_NO_EXTI15_10			40
+
+
+/*
+ * 인터럽트 우선순위 매크로
+ */
+#define NVIC_IRQ_PRIO0				0
+#define NVIC_IRQ_PRIO15				15
+
+/* 인터럽트 GPIO 선택 매크로*/
+#define GPIO_BASEADDR_TO_CODE(x)	((x == GPIOA) ? 0 :\
+									(x == GPIOB) ? 1 :\
+									(x == GPIOC) ? 2 :\
+									(x == GPIOD) ? 3 :\
+									(x == GPIOE) ? 4 :\
+									(x == GPIOF) ? 5 :\
+									(x == GPIOG) ? 6 :\
+									(x == GPIOH) ? 7 : 0)
+//									(x == GPIOI) ? 8 :
 
 /*
  * Clock Enable SYSCLK
@@ -356,6 +558,9 @@ typedef struct
 #define SYSCFG_PCLK_DI()			(RCC->APB2ENR &= ~(1<<14))
 
 
+
+
+
 /*일반 매크로*/
 
 #define	ENABLE						1
@@ -364,6 +569,8 @@ typedef struct
 #define RESET						DISABLE
 #define GPIO_PIN_SET				SET
 #define GPIO_PIN_RESET				RESET
+#define FLAG_RESET					RESET
+#define FLAG_SET					SET
 
 /*
  * 종속 되어있는 헤더 파일일 경우
@@ -371,5 +578,5 @@ typedef struct
  */
 
 #include "stm32f407xx_gpio_driver.h"
-
+#include "stm32f407xx_spi_driver.h"
 #endif /* INC_STM32F407XX_H_ */

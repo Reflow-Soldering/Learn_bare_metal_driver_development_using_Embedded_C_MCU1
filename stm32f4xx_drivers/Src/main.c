@@ -28,3 +28,10 @@ int main(void)
     /* Loop forever */
 	for(;;);
 }
+
+void EXTI0_IRQHandler(void)
+{
+	//무조건 내부에서 무언가를 처리해야함
+	//여기서는 GPIO_IRQHandling을 넣어본다
+	GPIO_IRQHandling(0);
+}

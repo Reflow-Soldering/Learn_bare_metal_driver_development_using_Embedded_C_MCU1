@@ -6,11 +6,14 @@
  */
 
 
+
+
 #include "stm32f407xx_gpio_driver.h"
 /*********************************************************************
  * @함수명					-	GPIO_PeriClockControl
  *
  * @설명						-	함수를 이용하여 GPIOx에 클럭 연결/해제 진행한다
+ *
  *
  * @매개변수					-	GPIO의 시작 메모리 주소
  * @매개변수					-	ENABLE 혹은 DISABLE 매크로
@@ -58,10 +61,10 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi)
 		{
 			GPIOH_PCLK_EN();
 		}
-		else if(pGPIOx == GPIOI)
-		{
-			GPIOI_PCLK_EN();
-		}
+//		else if(pGPIOx == GPIOI)
+//		{
+//			GPIOI_PCLK_EN();
+//		}
 	}
 	//GPIO Peripheral Clock Disable
 	//GPIO 주변장치 클럭 해제
@@ -99,10 +102,10 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi)
 		{
 			GPIOH_PCLK_DI();
 		}
-		else if(pGPIOx == GPIOI)
-		{
-			GPIOI_PCLK_DI();
-		}
+//		else if(pGPIOx == GPIOI)
+//		{
+//			GPIOI_PCLK_DI();
+//		}
 	}
 }
 /*
@@ -168,6 +171,10 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandles)
 	 *
 	 */
 	uint32_t temp = 0;
+
+	//GPIO 그룹 핀 인에이블을 여기서 진행하면 계속 할 필요 없음
+	GPIO_PeriClockControl(pGPIOHandles->pGPIOx, ENABLE);
+
 	//1번 설정 - 인터럽트 제외 코드 작성
 	if(pGPIOHandles->GPIO_PinConfig.GPIO_PinMode <= GPIO_MODE_ANALOG)
 //	if(pGPIOHandles->GPIO_PinConfig.GPIO_PinMode < GPIO_MODE_INT_FT)
@@ -186,28 +193,60 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandles)
 	}
 	else
 	{
-		//인터럽트 모드에서 작성
+		if(pGPIOHandles->GPIO_PinConfig.GPIO_PinMode <= GPIO_MODE_INT_FT)		//Falling Edge 일 때
+		{
+			//Falling Edge 레지스터 규정
+			EXTI->FTSR |= (1 << pGPIOHandles->GPIO_PinConfig.GPIO_PinNumber);
+			//어떠한 이유로 인해 Rising Edge가 규정되어 있으수도 있으므로 클리어
+			EXTI->RTSR &= ~(1 << pGPIOHandles->GPIO_PinConfig.GPIO_PinNumber);
+		}
+		else if(pGPIOHandles->GPIO_PinConfig.GPIO_PinMode <= GPIO_MODE_INT_RT)		//Rising Edge 일 때
+		{
+			//Rising Edge 레지스터 규정
+			EXTI->RTSR |= (1 << pGPIOHandles->GPIO_PinConfig.GPIO_PinNumber);
+			//어떠한 이유로 인해 Rising Edge가 규정되어 있으수도 있으므로 클리어
+			EXTI->FTSR &= ~(1 << pGPIOHandles->GPIO_PinConfig.GPIO_PinNumber);
+		}
+		else if(pGPIOHandles->GPIO_PinConfig.GPIO_PinMode <= GPIO_MODE_INT_FT_RT)		//Both Edge 일 때
+		{
+			//양쪽 에지 사용
+			EXTI->RTSR |= (1 << pGPIOHandles->GPIO_PinConfig.GPIO_PinNumber);
+			//양쪽의 에지 모두 활성화 하므로
+			EXTI->FTSR |= (1 << pGPIOHandles->GPIO_PinConfig.GPIO_PinNumber);
+		}
+
+		//GPIO 보트 설정 SYSCFG_EXTICR
+		uint8_t temp1 = (pGPIOHandles->GPIO_PinConfig.GPIO_PinNumber / 4);
+		uint8_t temp2 = (pGPIOHandles->GPIO_PinConfig.GPIO_PinNumber % 4);
+		uint8_t portcode = GPIO_BASEADDR_TO_CODE(pGPIOHandles->pGPIOx);
+		SYSCFG_PCLK_EN();
+		SYSCFG->EXTICR[temp1] = portcode <<(temp2 * 4);
+
+
+		//IMR에 전달할 exti 인에이블
+		EXTI->IMR |= (1 << pGPIOHandles->GPIO_PinConfig.GPIO_PinNumber);
 	}
+
 	temp = 0;
 
 	//2번 설정 핀 속도
-	temp = (pGPIOHandles->GPIO_PinConfig.GPIO_PinSpeed << (2 * pGPIOHandles->GPIO_PinConfig.GPIO_PinSpeed));
-	pGPIOHandles->pGPIOx->OSPEEDR &= ~(0x03 << pGPIOHandles->GPIO_PinConfig.GPIO_PinSpeed); //비트 클리어
+	temp = (pGPIOHandles->GPIO_PinConfig.GPIO_PinSpeed << (2 * pGPIOHandles->GPIO_PinConfig.GPIO_PinNumber));
+	pGPIOHandles->pGPIOx->OSPEEDR &= ~(0x03 <<(2* pGPIOHandles->GPIO_PinConfig.GPIO_PinNumber)); //비트 클리어
 	pGPIOHandles->pGPIOx->OSPEEDR |= temp;
 
 	temp =0;
 
 	//3번 설정 풀업 풀다운
-	temp = (pGPIOHandles->GPIO_PinConfig.GPIO_PinPuPdControl << (2 << pGPIOHandles->GPIO_PinConfig.GPIO_PinPuPdControl));
-	pGPIOHandles->pGPIOx->PUPDR &= ~(0x03 << pGPIOHandles->GPIO_PinConfig.GPIO_PinPuPdControl); //비트 클리어
+	temp = (pGPIOHandles->GPIO_PinConfig.GPIO_PinPuPdControl << (2 * pGPIOHandles->GPIO_PinConfig.GPIO_PinNumber));
+	pGPIOHandles->pGPIOx->PUPDR &= ~(0x03 << (2 * pGPIOHandles->GPIO_PinConfig.GPIO_PinNumber)); //비트 클리어
 	pGPIOHandles->pGPIOx->PUPDR |= temp;
 
 	temp = 0;
 
 	//4번 설정 출력 타입 설정
 	//16비트 설정함 r각 1비트
-	temp = (pGPIOHandles->GPIO_PinConfig.GPIO_PinOPType << ( pGPIOHandles->GPIO_PinConfig.GPIO_PinOPType));
-	pGPIOHandles->pGPIOx->OTYPER &= ~(0x01 << pGPIOHandles->GPIO_PinConfig.GPIO_PinOPType); //비트 클리어
+	temp = (pGPIOHandles->GPIO_PinConfig.GPIO_PinOPType << ( pGPIOHandles->GPIO_PinConfig.GPIO_PinNumber));
+	pGPIOHandles->pGPIOx->OTYPER &= ~(0x01 << pGPIOHandles->GPIO_PinConfig.GPIO_PinNumber); //비트 클리어
 	pGPIOHandles->pGPIOx->OTYPER |= temp;
 
 	temp = 0;
@@ -281,10 +320,10 @@ void GPIO_DeInit(GPIO_RegDef_t *pGPIOx)
 	{
 		GPIOH_PCLK_EN();
 	}
-	else if(pGPIOx == GPIOI)
-	{
-		GPIOI_PCLK_EN();
-	}
+//	else if(pGPIOx == GPIOI)
+//	{
+//		GPIOI_PCLK_EN();
+//	}
 }
 /*
  * Data read/write
@@ -424,10 +463,70 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber)
  *
  * @추가 내용					-	없음
  */
-void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi)
+void GPIO_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi)
 {
+	// 프로세서 측면에서 코드 작성
+	// Cortex -M4 Devices Generic User Guide 참조 할 것
+	// NVIC관련 확인 필수
+	if(EnorDi == ENABLE)		//endable
+	{
+		if(IRQNumber <= 31)
+		{
+			//ISER0 레지스터 코드 작성
+			*NVIC_ISER0 |= (1 << IRQNumber);
+		}
+		else if((IRQNumber > 31)&&(IRQNumber<64))
+		{
+			*NVIC_ISER1 |= (1 << IRQNumber %32);
+		}
+		else if((IRQNumber >= 64)&&(IRQNumber < 96))
+		{
+			*NVIC_ISER3 |= (1 << IRQNumber % 64);
+		}
+	}
+	else						//disable
+	{
+		if(IRQNumber <=31)
+		{
+			*NVIC_ICER0 |= (1 << IRQNumber);
+		}
+		else if((IRQNumber > 31)&&(IRQNumber<64))
+		{
+			*NVIC_ICER1 |= (1 << IRQNumber %32);
+		}
+		else if((IRQNumber >= 64)&&(IRQNumber < 96))
+		{
+			*NVIC_ICER3 |= (1 << IRQNumber % 64);
+		}
+	}
+}
+
+/*********************************************************************
+ * @함수명					-	GPIO_IRQPriorityConfig
+ *
+ * @설명						-	인터럽트 우선순위 설정
+ *
+ * @매개변수					-   IRQNumber
+ * @매개변수					-	IRQPriority
+ * @매개변수					-
+ *
+ * @반환값					-	없음
+ *
+ * @추가 내용					-	없음
+ */
+void GPIO_IRQPriorityConfig(uint8_t IRQNumber,uint32_t IRQPriority)
+{
+	//1 IPR 레지스터 찾기
+	uint8_t iprx = IRQNumber / 4; //8비트 구성으로 4개이므로
+	uint8_t iprx_section = IRQNumber % 1; // 32바이트에서 시작되는 곳 확인
+
+	uint8_t shift_amount = (8*iprx_section)+(8-NO_PR_BITS_IMPLEMENTED);
+
+	*(NVIC_PR_BASE_ADDR + iprx) |= (IRQPriority<<shift_amount);
+	//상위 4비트는 사용 하위 4비트는 미사용
 
 }
+
 
 /*********************************************************************
  * @함수명					-	GPIO_IRQHandling
@@ -444,5 +543,16 @@ void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi)
  */
 void GPIO_IRQHandling(uint8_t PinNumber)
 {
+	//핀 넘버에 해당하는 EXTI PR 레지스터 클리어
+	//PR에서 해당되는 핀에 트리거가 발생하여 1로 셋팅되기 때문
+	//이것은 내부적으로 1로 세팅되어 이 함수로 오게 되며
+	//핀 넘버에 해당하는 인터럽트에 1을 다시 write하면 클리어 된다.
+	//0을 쓰면 아무 일도 일어나지 않는다
+	if(EXTI->PR &(1<<PinNumber))
+	{
+		//클리어
+		EXTI->PR |= (1 << PinNumber);
+	}
+
 
 }

@@ -7,7 +7,15 @@
 
 #ifndef INC_STM32F407XX_GPIO_DRIVER_H_
 #define INC_STM32F407XX_GPIO_DRIVER_H_
-
+/********************************************************************
+ * 해당 헤더 파일은 GPIO의 연결, 속성, 동작 등을 규정하는
+ * 함수 및 코드만을 작성한다.
+ * - GPIOx의 클럭 연결
+ * - GPIOx의 클럭 해제
+ * - GPIOx 핀의 속성 설정
+ * - GPIOx 핀의 동작 설정
+ * - GPIOx의 구조체
+ */
 #include "stm32f407xx.h"
 
 typedef struct
@@ -98,7 +106,7 @@ typedef struct
  */
 
 #define GPIO_NO_PP_PD								0
-#define GPIO_PP										1
+#define GPIO_PU										1
 #define GPIO_PD										2
 #define OUTPUT_RESERVED								3//사용하지 않음
 /**********************************************************
@@ -139,7 +147,9 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber);
 /*
  * IRQ Configuration
  */
-void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi);
+void GPIO_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi);
+
+void GPIO_IRQPriorityConfig(uint8_t IRQNumber,uint32_t IRQPriority);
 
 void GPIO_IRQHandling(uint8_t PinNumber);
 

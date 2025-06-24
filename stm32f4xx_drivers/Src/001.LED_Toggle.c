@@ -20,7 +20,17 @@ int main(void)
 	GpioLed.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_12;
 	GpioLed.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUTPUT;
 	GpioLed.GPIO_PinConfig.GPIO_PinSpeed = OUTPUT_SPD_VERY_HIGH;
-	GpioLed.GPIO_PinConfig.GPIO_PinOPType = GPIO_NO_PP_PD;
+
+	/*Push Pull 방식일 경우*/
+
+	GpioLed.GPIO_PinConfig.GPIO_PinOPType = OUTPUT_OP_TYPE_PUSH_PULL;
+	GpioLed.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PP_PD;
+
+	/*Open Drain 방식일 경우*/
+
+//	GpioLed.GPIO_PinConfig.GPIO_PinOPType = OUTPUT_OP_TYPE_OPEN_DRAIN;
+//	GpioLed.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PU;
+
 
 	GPIO_PeriClockControl(GPIOD, ENABLE);
 
