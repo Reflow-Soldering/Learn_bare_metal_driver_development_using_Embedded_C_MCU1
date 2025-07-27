@@ -87,13 +87,13 @@ int main(void)
 	SPI2_Init();		//SPI_Init 내부에 peripheral 인에이블 함수 있음!!
 
 	//SSI Configure - 내부 NSS핀(마스터 슬레이브 핀 을 high로 만듬 MODF에러 없애기 위함
-	SPI_SSIConfig();
+	SPI_SSIConfig(SPI2,ENABLE);
 
 	//SPI2 peri enable 필수
 	SPI_PeriClockControl(SPI2, ENABLE);
 
 	//1차로 슬레이브가 받을 수 있는 데이터 길이를 확인
-	uint8_t dataLen = strlen((const char*)user_data);
+	uint8_t data_Len = strlen((const char*)user_data);
 	SPI_SendData(SPI2,&data_Len,1);
 
 	//SPI 데이터 전송

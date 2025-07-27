@@ -358,7 +358,7 @@ void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t EnOrDi)
  *
  * @반환값					-	None
  *
- * @추가 내용					-	None
+ * @추가 내용					-	내부적으로 NSS핀 HIGH
  */
 void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t EnOrDi)
 {

@@ -38,14 +38,14 @@ int main(void)
 
 
 //	External Push Button Test
-	GpioButton.pGPIOx = GPIOB;
-	GpioButton.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_12;
+	GpioButton.pGPIOx = GPIOA;
+	GpioButton.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_0;
 	GpioButton.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_INPUT;
 	GpioButton.GPIO_PinConfig.GPIO_PinSpeed = OUTPUT_SPD_VERY_HIGH;
 //	GpioButton.GPIO_PinConfig.GPIO_PinOPType = OUTPUT_OP_TYPE_PUSH_PULL; // 사용 안함
 	GpioButton.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PP_PD;
 
-	GPIO_PeriClockControl(GPIOB, ENABLE);
+	GPIO_PeriClockControl(GPIOA, ENABLE);
 
 	GPIO_Init(&GpioButton);
 
@@ -55,7 +55,7 @@ int main(void)
 	//스위치를 누르면 LED가 꺼짐 상태로 변경됨
 	while(1)
 	{
-		if(GPIO_ReadFromInputPin(GPIOB, GPIO_PIN_12) == SET)
+		if(GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_0) == SET)
 		{
 			GPIO_WriteToOutputPin(GPIOD, GPIO_PIN_12, SET);
 		}
