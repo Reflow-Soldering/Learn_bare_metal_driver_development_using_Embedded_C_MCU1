@@ -251,8 +251,9 @@ typedef struct
 	__vo uint32_t ODR;								//GPIO Output Data register. Can read and write. Can change used by BSRR register
 	__vo uint32_t BSRR;								//Port x reset, set bit
 	__vo uint32_t LCKR;								//??????
-	__vo uint32_t AFRL;								//Alternative Function Low register
-	__vo uint32_t AFRH;								//Alternative Function High register
+	__vo uint32_t AFR[2];
+	/*__vo uint32_t AFRL;								//Alternative Function Low register
+	__vo uint32_t AFRH;								//Alternative Function High register*/
 }GPIO_RegDef_t;
 
 /*RCC Register Structure*/
@@ -370,15 +371,18 @@ typedef struct
 #define SPI_CR1_SSM											9
 #define SPI_CR1_RXONLY										10
 #define SPI_CR1_DFF											11
+#define SPI_CR1_CRCNEXT   			 						12
+#define SPI_CR1_CRCEN   								 	13
 #define SPI_CR1_BIDIOE										14
 #define SPI_CR1_BIDIMODE									15
 
 /*
  * SPI CR2 매크로
  */
-#define SPI_CR2_SSOE 										0
-#define SPI_CR2_TXDMAEN 									1
-#define SPI_CR2_RXDMAEN										2
+
+#define SPI_CR2_RXDMAEN 									0
+#define SPI_CR2_TXDMAEN										1
+#define SPI_CR2_SSOE										2
 #define SPI_CR2_FRF											4
 #define SPI_CR2_ERRIE										5
 #define SPI_CR2_RXEIE										6

@@ -7,6 +7,7 @@
 
 
 #include "stm32f407xx.h"
+#include "stm32f407xx_gpio_driver.h"
 #include <string.h>
 //PB14 - SPI2_MISO
 //PB15 - SPI2_MOSI
@@ -33,7 +34,7 @@ void SPI2_GPIOInit(void)
 	SPIPins.GPIO_PinConfig.GPIO_AltFunMode = 5;
 	SPIPins.GPIO_PinConfig.GPIO_PinOPType = OUTPUT_OP_TYPE_PUSH_PULL;
 	SPIPins.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PP_PD;
-	SPIPins.GPIO_PinConfig.GPIO_PinSpeed = OUTPUT_SPD_VERY_HIGH;
+	SPIPins.GPIO_PinConfig.GPIO_PinSpeed = OUTPUT_SPD_HIGH;
 
 	//SCLK 설정
 	SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_13;
@@ -125,16 +126,20 @@ int main(void)
 		delay();
 
 		//SPI2 peri enable 필수
-		SPI_PeriClockControl(SPI2, ENABLE);
+		SPI_PeripheralControl(SPI2, ENABLE);
 
+		//first send length info
+		uint8_t dataLen = strlen(user_data);
+//		SPI2->CR1 |= 1<<SPI_CR1_SPE;
+		SPI_SendData(SPI2,&dataLen,1);
 
-		SPI_SendData(SPI2,user_data,strlen((const char *)user_data));
+		SPI_SendData(SPI2,(uint8_t *)user_data,strlen(user_data));
 
 		//SPI가 busy인지 확인
-		while(SPI_GetFlagStatus(SPI2, SPI_SR_BSY));		//1을 줄 때까지 대기
+		while(SPI_GetFlagStatus(SPI2, SPI_BSY_FLAG)==SET);		//1을 줄 때까지 대기
 
 		//disable SPI2
-		SPI_PeriClockControl(SPI2, DISABLE);
+		SPI_PeripheralControl(SPI2, DISABLE);
 	}
 
 	return 0;

@@ -1,0 +1,5 @@
+../Src/007.SPI_TXOnly_Arduino.c:19:6:delay	2
+../Src/007.SPI_TXOnly_Arduino.c:27:6:SPI2_GPIOInit	1
+../Src/007.SPI_TXOnly_Arduino.c:61:6:SPI2_Init	1
+../Src/007.SPI_TXOnly_Arduino.c:79:6:GPIO_ButtonInit	1
+../Src/007.SPI_TXOnly_Arduino.c:95:5:main	3

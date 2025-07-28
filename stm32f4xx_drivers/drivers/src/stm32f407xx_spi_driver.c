@@ -124,6 +124,8 @@ void SPI_Init(SPI_Handle_t *pSPIHandles)
 	//6. 클럭 에지 결정
 	tempreg |= pSPIHandles->SPI_PinConfig.SPI_CPHA << SPI_CR1_CPHA;
 
+	tempreg |= pSPIHandles->SPI_PinConfig.SPI_SSM << SPI_CR1_SSM;
+
 	//레지스터 저장
 	pSPIHandles->pSPIx->CR1 = tempreg;
 }
@@ -163,7 +165,8 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx)
 
 uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName)
 {
-	if(pSPIx->SR & FlagName)
+//	if(pSPIx->SR & FlagName)
+	if((pSPIx->SR & FlagName))
 	{
 		return FLAG_SET;
 	}

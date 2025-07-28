@@ -258,7 +258,9 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandles)
 
 		temp1 = pGPIOHandles->GPIO_PinConfig.GPIO_PinNumber / 8;
 		temp2 = pGPIOHandles->GPIO_PinConfig.GPIO_PinNumber % 8;
-		if(temp1 == 0)
+		pGPIOHandles->pGPIOx->AFR[temp1] &= ~(0xF << ( 4 * temp2 ) ); //clearing
+		pGPIOHandles->pGPIOx->AFR[temp1] |= (pGPIOHandles->GPIO_PinConfig.GPIO_AltFunMode << ( 4 * temp2 ) );
+		/*if(temp1 == 0)
 		{
 			pGPIOHandles->pGPIOx->AFRL &= ~(0xF << (4 * temp2) );
 			pGPIOHandles->pGPIOx->AFRL |= (0xF << (4 * temp2) );
@@ -267,7 +269,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandles)
 		{
 			pGPIOHandles->pGPIOx->AFRH &= ~(0xF << (4 * temp2) );
 			pGPIOHandles->pGPIOx->AFRH |= (pGPIOHandles->GPIO_PinConfig.GPIO_AltFunMode << (4 * temp2) );
-		}
+		}*/
 	}
 
 

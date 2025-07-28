@@ -99,7 +99,7 @@ typedef struct
 
 #define SPI_TXE_FLAG								(1<<SPI_SR_TXE)
 #define SPI_RXNE_FLAG								(1<<SPI_SR_RXNE)
-#define SPI_BUSY_FLAG								(1<<SPI_SR_BSY)
+#define SPI_BSY_FLAG								(1<<SPI_SR_BSY)
 
 /*
  * SPI CLK Set
@@ -107,6 +107,7 @@ typedef struct
  */
 
 void SPI_PeriClockControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi);
+void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t EnOrDi);
 void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t EnOrDi);
 void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t EnOrDi);
 uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName);
@@ -133,6 +134,7 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx);
 //폴링방식
 void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTXBuffer, uint32_t Len);
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx,uint8_t *pRXBuffer, uint32_t Len);
+
 
 
 //인터럽트 방식
