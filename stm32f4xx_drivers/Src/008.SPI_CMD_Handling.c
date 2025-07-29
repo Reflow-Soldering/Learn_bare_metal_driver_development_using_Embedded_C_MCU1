@@ -163,7 +163,7 @@ int main(void)
 		delay();
 
 		//SPI2 peri enable 필수
-		SPI_PeriClockControl(SPI2, ENABLE);
+		SPI_PeripheralControl(SPI2, ENABLE);
 
 		//CMD_LED_CTRL
 		uint8_t commandcode = COMMAND_LED_CTRL;
@@ -380,7 +380,7 @@ int main(void)
 			while(SPI_GetFlagStatus(SPI2, SPI_SR_BSY));		//1을 줄 때까지 대기
 
 			//disable SPI2
-			SPI_PeriClockControl(SPI2, DISABLE);
+			SPI_PeripheralControl(SPI2, DISABLE);
 
 			printf("COMMAND_ID : %s \n", id);
 	}

@@ -75,7 +75,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Inc"/>
-						<entry excluding="006.SPI_TX_Testing(Have to run).c|005.Button_Interrupt.c|003.LED_Button_EXT.c|008.SPI_CMD_Handling.c|main.c|002.LED_Button.c|001.LED_Toggle.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Src"/>
+						<entry excluding="007.SPI_TXOnly_Arduino.c|006.SPI_TX_Testing(Have to run).c|005.Button_Interrupt.c|003.LED_Button_EXT.c|main.c|002.LED_Button.c|001.LED_Toggle.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Startup"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="drivers"/>
 					</sourceEntries>
@@ -150,7 +150,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Inc"/>
-						<entry excluding="006.SPI_TX_Testing(Have to run).c|005.Button_Interrupt.c|003.LED_Button_EXT.c|008.SPI_CMD_Handling.c|main.c|002.LED_Button.c|001.LED_Toggle.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Src"/>
+						<entry excluding="007.SPI_TXOnly_Arduino.c|006.SPI_TX_Testing(Have to run).c|005.Button_Interrupt.c|003.LED_Button_EXT.c|main.c|002.LED_Button.c|001.LED_Toggle.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Startup"/>
 					</sourceEntries>
 				</configuration>

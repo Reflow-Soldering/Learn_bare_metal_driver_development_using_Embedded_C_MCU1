@@ -1,4 +1,4 @@
-"./Src/007.SPI_TXOnly_Arduino.o"
+"./Src/008.SPI_CMD_Handling.o"
 "./Src/syscalls.o"
 "./Src/sysmem.o"
 "./Startup/startup_stm32f407vgtx.o"
