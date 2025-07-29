@@ -47,6 +47,7 @@
 									<listOptionValue builtIn="false" value="../Inc"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/drivers/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;H:\Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1\stm32f4xx_drivers\drivers\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\repo\Learn_bare_metal_driver_development_using_Embedded_C_MCU1\stm32f4xx_drivers\drivers\inc&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.372473102" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>

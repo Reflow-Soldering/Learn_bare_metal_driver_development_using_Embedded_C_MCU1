@@ -129,11 +129,11 @@ int main(void)
 		SPI_PeripheralControl(SPI2, ENABLE);
 
 		//first send length info
-		uint8_t dataLen = strlen(user_data);
+		uint8_t dataLen = (uint8_t)(strlen((const char *)user_data));
 //		SPI2->CR1 |= 1<<SPI_CR1_SPE;
 		SPI_SendData(SPI2,&dataLen,1);
 
-		SPI_SendData(SPI2,(uint8_t *)user_data,strlen(user_data));
+		SPI_SendData(SPI2,(uint8_t *)user_data,strlen((const char *)user_data));
 
 		//SPI가 busy인지 확인
 		while(SPI_GetFlagStatus(SPI2, SPI_BSY_FLAG)==SET);		//1을 줄 때까지 대기
