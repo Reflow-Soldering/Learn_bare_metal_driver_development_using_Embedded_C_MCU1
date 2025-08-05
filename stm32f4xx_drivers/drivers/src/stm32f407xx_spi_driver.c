@@ -242,7 +242,7 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx,uint8_t *pRXBuffer, uint32_t Len)
 		if(pSPIx->CR1 & (1<<SPI_CR1_DFF))
 		{
 			//16비트 설정 시
-			//1. RXBuffer에서 데이터 읽어오기
+			//1. DR에서 RXBuffer로 데이터 읽어오기
 			*((uint16_t *)pRXBuffer) = pSPIx->DR;
 			Len--;
 			Len--;
@@ -251,7 +251,7 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx,uint8_t *pRXBuffer, uint32_t Len)
 		else
 		{
 			//8비트 전송일 경우
-			*pRXBuffer = pSPIx->DR;
+			*(pRXBuffer) = pSPIx->DR;
 			Len--;
 			pRXBuffer++;
 		}

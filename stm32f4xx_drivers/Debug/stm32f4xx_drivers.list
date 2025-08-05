@@ -2538,7 +2538,7 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx,uint8_t *pRXBuffer, uint32_t Len)
  800101c:	d00e      	beq.n	800103c <SPI_ReceiveData+0x48>
 		{
 			//16비트 설정 시
-			//1. RXBuffer에서 데이터 읽어오기
+			//1. DR에서 RXBuffer로 데이터 읽어오기
 			*((uint16_t *)pRXBuffer) = pSPIx->DR;
  800101e:	68fb      	ldr	r3, [r7, #12]
  8001020:	68db      	ldr	r3, [r3, #12]
@@ -2562,7 +2562,7 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx,uint8_t *pRXBuffer, uint32_t Len)
 		else
 		{
 			//8비트 전송일 경우
-			*pRXBuffer = pSPIx->DR;
+			*(pRXBuffer) = pSPIx->DR;
  800103c:	68fb      	ldr	r3, [r7, #12]
  800103e:	68db      	ldr	r3, [r3, #12]
  8001040:	b2da      	uxtb	r2, r3
