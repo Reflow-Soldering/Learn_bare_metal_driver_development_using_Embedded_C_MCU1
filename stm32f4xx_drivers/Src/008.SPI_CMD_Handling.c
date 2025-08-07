@@ -268,7 +268,7 @@ int main(void)
 		if(SPI_VerifyResponse(ackbyte))
 		{
 			//send arguments
-			args[0] = LED_PIN_9;
+			args[0] = ANALOG_PIN0;
 			SPI_SendData(SPI2, args, 1);
 
 			//데이터를 한 번 더 보냈으므로 RXNE 버퍼 초기화 위해서

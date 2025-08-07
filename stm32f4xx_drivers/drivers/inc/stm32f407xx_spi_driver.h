@@ -9,6 +9,9 @@
 #define INC_STM32F407XX_SPI_DRIVER_H_
 
 #include "stm32f407xx.h"
+
+
+
 /* SPI 드라이버 설정 */
 typedef struct
 {
@@ -24,10 +27,33 @@ typedef struct
 typedef struct
 {
 	// GPIO 장치들의 기본값을 포인터로 지정
-	SPI_RegDef_t *pSPIx;
-	SPI_PinConfig_t SPI_PinConfig;
-
+	SPI_RegDef_t 	*pSPIx;
+	SPI_PinConfig_t	SPI_PinConfig;
+	uint8_t			*pTxBuffer;
+	uint8_t			*pRxBuffer;
+	uint32_t		TxLen;
+	uint32_t		RxLen;
+	uint8_t			TxState;
+	uint8_t			RxState;
 }SPI_Handle_t;
+
+
+/*
+ * SPI 상태 매크로
+*/
+#define	SPI_READY		0
+#define SPI_BUSY_IN_RX	1
+#define SPI_BUSY_IN_TX	2
+
+
+/*
+ * 이벤트 SPI 처리
+*/
+#define SPI_EVENT_TX_CMPLT	1
+#define SPI_EVENT_RX_CMPLT	2
+#define SPI_EVENT_OVR_ERR	3
+#define SPI_EVENT_CRC_ERR	4
+
 
 
 /*
@@ -135,6 +161,9 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx);
 void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTXBuffer, uint32_t Len);
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx,uint8_t *pRXBuffer, uint32_t Len);
 
+//인터럽트 방식
+uint8_t SPI_SendDataIT(SPI_Handle_t *pSPIx, uint8_t *pTXBuffer, uint32_t Len);
+uint8_t SPI_ReceiveDataIT(SPI_Handle_t *pSPIx,uint8_t *pRXBuffer, uint32_t Len);
 
 
 //인터럽트 방식
@@ -144,5 +173,7 @@ void SPI_IRQPriorityConfig(uint8_t IRQNumber,uint32_t IRQPriority);
 
 void SPI_IRQHandling(SPI_Handle_t *pHandle);
 
-
+void SPI_ClearOVRFlag(SPI_RegDef_t *pSPIx);
+void SPI_CloseTransmission(SPI_Handle_t *pSPIx);
+void SPI_CloseReception(SPI_Handle_t *pSPIHandle);
 #endif /* INC_STM32F407XX_SPI_DRIVER_H_ */

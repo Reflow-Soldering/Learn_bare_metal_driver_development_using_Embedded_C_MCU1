@@ -13,6 +13,7 @@
  * stdint.h는 uint16_t, uint8_t 등 변수의 형태를
  * 규정하므로 반드시 필요하다
  */
+#include <stddef.h>
 #include <stdint.h>
 #include <memory.h>
 //volatile define

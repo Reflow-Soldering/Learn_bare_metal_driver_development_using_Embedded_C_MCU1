@@ -7,6 +7,9 @@
 
 #include "stm32f407xx_spi_driver.h"
 
+static void SPI_RxneInterrupt_handle(SPI_Handle_t *pSPIHandle);
+static void SPI_TxeInterrupt_handle(SPI_Handle_t *pSPIHandle);
+static void SPI_OVRInterrupt_handle(SPI_Handle_t *pSPIHandle);
 
 /*********************************************************************
  * @함수명					-	SPI_PeriClockControl
@@ -299,6 +302,57 @@ void SPI_IRQPriorityConfig(uint8_t IRQNumber,uint32_t IRQPriority)
 }
 
 /*********************************************************************
+ * @함수명					-	SPI_SendDataIT
+ *
+ * @설명						-	인터럽트의 우선순위 설정
+ *
+ *
+ * @매개변수					-	인터럽트 IRQNumber
+ * @매개변수					-	인터럽트 우선수위
+ * @매개변수					-
+ *
+ * @반환값					-	None
+ *
+ * @추가 내용					-	None
+ */
+uint8_t SPI_SendDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pTXBuffer, uint32_t Len)
+{
+	uint8_t state = pSPIHandle->TxState;
+	if(state != SPI_BUSY_IN_TX)
+	{
+		//1. Tx buffer 길이와 주소를 전역변수에 저장
+		pSPIHandle->pTxBuffer = pTXBuffer;
+		pSPIHandle->TxLen = Len;
+
+		//2. SPI의 상태를 busy로 한다 ->> 다른 코드가 SPI 장치를 건드리지 못하게(busy면 나중에 다시 코드가 넘어와야함)
+		pSPIHandle->TxState = SPI_BUSY_IN_TX;
+		//3. SR에서 TXE가 셋 될 때마다 TXEIE가 활성화 되게 한다
+		pSPIHandle->pSPIx->CR2 |= (1 << SPI_CR2_TXEIE);
+	}
+		//4. ISR코드에 의해 데이터 전송시킴
+
+	return state;
+}
+uint8_t SPI_ReceiveDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pRXBuffer, uint32_t Len)
+{
+	uint8_t state = pSPIHandle->TxState;
+	if(state != SPI_BUSY_IN_RX)
+	{
+		//1. Rx buffer 길이와 주소를 전역변수에 저장
+		pSPIHandle->pRxBuffer = pRXBuffer;
+		pSPIHandle->RxLen = Len;
+
+		//2. SPI의 상태를 busy로 한다 ->> 다른 코드가 SPI 장치를 건드리지 못하게(busy면 나중에 다시 코드가 넘어와야함)
+		pSPIHandle->RxState = SPI_BUSY_IN_RX;
+		//3. SR에서 RXE가 셋 될 때마다 TXEIE가 활성화 되게 한다
+		pSPIHandle->pSPIx->CR2 |= (1 << SPI_CR2_RXEIE);
+	}
+		//4. ISR코드에 의해 데이터 전송시킴
+
+	return state;
+}
+
+/*********************************************************************
  * @함수명					-	SPI_IRQHandling
  *
  * @설명						-	활성화된 인터럽트 핀 번호 설정
@@ -314,7 +368,37 @@ void SPI_IRQPriorityConfig(uint8_t IRQNumber,uint32_t IRQPriority)
  */
 void SPI_IRQHandling(SPI_Handle_t *pHandle)
 {
+	uint8_t temp1, temp2;
 
+	//TXE 확인
+	temp1 = pHandle->pSPIx->SR & (1 << SPI_SR_TXE);
+	temp2 = pHandle->pSPIx->CR2 & (1 << SPI_CR2_TXEIE);
+
+	if(temp1 && temp2)
+	{
+		//TXE 핸들러 구동
+		SPI_TxeInterrupt_handle();
+	}
+
+	//RXNE 확인
+	temp1 = pHandle->pSPIx->SR & (1 << SPI_SR_RXNE);
+	temp2 = pHandle->pSPIx->CR2 & (1 << SPI_CR2_RXEIE);
+
+	if(temp1 && temp2)
+	{
+		//TXE 핸들러 구동
+		SPI_RxneInterrupt_handle();
+
+	}
+
+	//OVR 확인
+	temp1 = pHandle->pSPIx->SR & (1 << SPI_SR_OVR);
+	temp2 = pHandle->pSPIx->CR2 & (1 << SPI_CR2_ERRIE);
+	if(temp1 && temp2)
+	{
+		//TXE 핸들러 구동
+		SPI_OVRInterrupt_handle();
+	}
 }
 
 
@@ -399,4 +483,114 @@ void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t EnOrDi)
 	{
 		pSPIx->CR2 &= ~(1<<SPI_CR2_SSOE);
 	}
+}
+
+
+
+
+//인터럽트 핸들러 구현
+
+
+static void SPI_TxeInterrupt_handle(SPI_Handle_t *pSPIHandle)
+{
+	// 2. CR1의 DFF 비트 확인
+	if(pSPIHandle->pSPIx->CR1 & (1<<SPI_CR1_DFF))
+	{
+		//16비트 설정 시
+		//1. DR에서 데이터 불러오기
+		pSPIHandle->pSPIx->DR = *((uint16_t *)pSPIHandle->pTxBuffer);
+		pSPIHandle->TxLen--;
+		pSPIHandle->TxLen--;
+		(uint16_t *)pSPIHandle->pTXBuffer++;
+	}
+	else
+	{
+		pSPIHandle->pSPIx->DR = *pSPIHandle->pTxBuffer;
+		Len--;
+		pSPIHandle->pTxBuffer++;
+	}
+	//길이가 0이면
+	if(!pSPIHandle->TxLen)
+	{
+		//TxLen이 0이어서 전송을 종료해야하면 인터럽트 플래그를 종료해야함
+		/*pSPIHandle->pSPIx->CR2 &= ~(1 << SPI_CR2_TXEIE);
+		pSPIHandle->pTxBuffer = NULL;
+		pSPIHandle->TxLen = 0;
+		pSPIHandle->TxState = SPI_READY;*/
+		//아래로 대체
+		SPI_CloseReception(pSPIHandle);
+		SPI_ApplicationEventCallback(pSPIHandle, SPI_EVENT_TX_CMPLT);
+
+	}
+}
+
+static void SPI_RxneInterrupt_handle(SPI_Handle_t *pSPIHandle)
+{
+	if(pSPIHandle->pSPIx->CR1 & (1<<SPI_CR1_DFF))
+	{
+		//16비트 설정 시
+		//1. DR에서 RXBuffer로 데이터 읽어오기
+		*((uint16_t *)pSPIHandle->pRxBuffer) = pSPIHandle->pSPIx->DR;
+		pSPIHandle->RxLen -= 2;
+
+		pSPIHandle->pRxBuffer++;
+		pSPIHandle->pRxBuffer++;
+	}
+	else
+	{
+		//8비트 전송일 경우
+		*(pSPIHandle->pRxBuffer) = (uint8_t) pSPIHandle->pSPIx->DR;
+		pSPIHandle->RxLen--;
+		pSPIHandle->pRxBuffer++;
+	}
+	if(pSPIHandle->RxLen)
+	{
+		/*
+		pSPIHandle->pSPIx->CR2 &= ~(1 << SPI_CR2_RXEIE);
+		pSPIHandle->pRxBuffer = NULL;
+		pSPIHandle->RxLen = 0;
+		pSPIHandle->RxState = SPI_READY;*/
+		//아래로 대체
+		SPI_CloseTransmission(pSPIHandle);
+
+		SPI_ApplicationEventCallback(pSPIHandle, SPI_EVENT_RX_CMPLT);
+	}
+
+
+
+}
+static void SPI_OVRInterrupt_handle(SPI_Handle_t *pSPIHandle)
+{
+	//1. OVR 제거
+	uint8_t temp1, temp2;
+
+	if(pSPIHandle->TxState != SPI_BUSY_IN_TX)
+	{
+		temp1 = pSPIHandle->pSPIx->DR;
+		temp2 = pSPIHandle->pSPIx->SR;
+	}
+	SPI_ApplicationEventCallback(pSPIHandle, SPI_EVENT_OVR_CMPLT);
+
+	//2. 실행
+}
+
+
+void SPI_ClearOVRFlag(SPI_RegDef_t *pSPIx)
+{
+
+}
+void SPI_CloseTransmission(SPI_Handle_t *pSPIHandle)
+{
+	pSPIHandle->pSPIx->CR2 &= ~(1 << SPI_CR2_TXEIE);
+	pSPIHandle->pTxBuffer = NULL;
+	pSPIHandle->TxLen = 0;
+	pSPIHandle->TxState = SPI_READY;
+}
+
+void SPI_CloseReception(SPI_Handle_t *pSPIHandle)
+{
+	pSPIHandle->pSPIx->CR2 &= ~(1 << SPI_CR2_RXEIE);
+	pSPIHandle->pRxBuffer = NULL;
+	pSPIHandle->RxLen = 0;
+	pSPIHandle->RxState = SPI_READY;
 }
