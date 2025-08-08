@@ -279,7 +279,41 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx,uint8_t *pRXBuffer, uint32_t Len)
  */
 void SPI_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi)
 {
-
+	// 프로세서 측면에서 코드 작성
+	// Cortex -M4 Devices Generic User Guide 참조 할 것
+	// NVIC관련 확인 필수
+	if(EnorDi == ENABLE)		//endable
+	{
+		if(IRQNumber <= 31)
+		{
+			//ISER0 레지스터 코드 작성
+			*NVIC_ISER0 |= (1 << IRQNumber);
+		}
+		else if((IRQNumber > 31)&&(IRQNumber<64))
+		{
+			*NVIC_ISER1 |= (1 << IRQNumber %32);
+		}
+		else if((IRQNumber >= 64)&&(IRQNumber < 96))
+		{
+			*NVIC_ISER3 |= (1 << IRQNumber % 64);
+		}
+	}
+	else						//disable
+	{
+		if(IRQNumber <=31)
+		{
+			*NVIC_ICER0 |= (1 << IRQNumber);
+		}
+		else if((IRQNumber > 31)&&(IRQNumber<64))
+		{
+			*NVIC_ICER1 |= (1 << IRQNumber %32);
+		}
+		else if((IRQNumber >= 64)&&(IRQNumber < 96))
+		{
+			*NVIC_ICER3 |= (1 << IRQNumber % 64);
+		}
+	}
+}
 }
 
 /*********************************************************************
@@ -298,6 +332,14 @@ void SPI_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi)
  */
 void SPI_IRQPriorityConfig(uint8_t IRQNumber,uint32_t IRQPriority)
 {
+	//1 IPR 레지스터 찾기
+	uint8_t iprx = IRQNumber / 4; //8비트 구성으로 4개이므로
+	uint8_t iprx_section = IRQNumber % 1; // 32바이트에서 시작되는 곳 확인
+
+	uint8_t shift_amount = (8*iprx_section)+(8-NO_PR_BITS_IMPLEMENTED);
+
+	*(NVIC_PR_BASE_ADDR + iprx) |= (IRQPriority<<shift_amount);
+	//상위 4비트는 사용 하위 4비트는 미사용
 
 }
 
@@ -377,7 +419,7 @@ void SPI_IRQHandling(SPI_Handle_t *pHandle)
 	if(temp1 && temp2)
 	{
 		//TXE 핸들러 구동
-		SPI_TxeInterrupt_handle();
+		SPI_TxeInterrupt_handle(pHandle);
 	}
 
 	//RXNE 확인
@@ -387,7 +429,7 @@ void SPI_IRQHandling(SPI_Handle_t *pHandle)
 	if(temp1 && temp2)
 	{
 		//TXE 핸들러 구동
-		SPI_RxneInterrupt_handle();
+		SPI_RxneInterrupt_handle(pHandle);
 
 	}
 
@@ -397,7 +439,7 @@ void SPI_IRQHandling(SPI_Handle_t *pHandle)
 	if(temp1 && temp2)
 	{
 		//TXE 핸들러 구동
-		SPI_OVRInterrupt_handle();
+		SPI_OVRInterrupt_handle(pHandle);
 	}
 }
 
@@ -501,12 +543,12 @@ static void SPI_TxeInterrupt_handle(SPI_Handle_t *pSPIHandle)
 		pSPIHandle->pSPIx->DR = *((uint16_t *)pSPIHandle->pTxBuffer);
 		pSPIHandle->TxLen--;
 		pSPIHandle->TxLen--;
-		(uint16_t *)pSPIHandle->pTXBuffer++;
+		(uint16_t *)pSPIHandle->pTxBuffer++;
 	}
 	else
 	{
 		pSPIHandle->pSPIx->DR = *pSPIHandle->pTxBuffer;
-		Len--;
+		pSPIHandle->TxLen--;
 		pSPIHandle->pTxBuffer++;
 	}
 	//길이가 0이면
@@ -562,21 +604,27 @@ static void SPI_RxneInterrupt_handle(SPI_Handle_t *pSPIHandle)
 static void SPI_OVRInterrupt_handle(SPI_Handle_t *pSPIHandle)
 {
 	//1. OVR 제거
-	uint8_t temp1, temp2;
+	uint8_t temp;
 
 	if(pSPIHandle->TxState != SPI_BUSY_IN_TX)
 	{
-		temp1 = pSPIHandle->pSPIx->DR;
-		temp2 = pSPIHandle->pSPIx->SR;
+		temp = pSPIHandle->pSPIx->DR;
+		temp = pSPIHandle->pSPIx->SR;
 	}
-	SPI_ApplicationEventCallback(pSPIHandle, SPI_EVENT_OVR_CMPLT);
-
+	(void)temp;
 	//2. 실행
+	SPI_ApplicationEventCallback(pSPIHandle, SPI_EVENT_OVR_ERR);
+
+
 }
 
 
 void SPI_ClearOVRFlag(SPI_RegDef_t *pSPIx)
 {
+	uint8_t temp;
+	temp = pSPIx->DR;
+	temp = pSPIx->SR;
+	(void)temp;
 
 }
 void SPI_CloseTransmission(SPI_Handle_t *pSPIHandle)
@@ -593,4 +641,10 @@ void SPI_CloseReception(SPI_Handle_t *pSPIHandle)
 	pSPIHandle->pRxBuffer = NULL;
 	pSPIHandle->RxLen = 0;
 	pSPIHandle->RxState = SPI_READY;
+}
+
+
+__weak void SPI_ApplicationEventCallback(SPI_Handle_t *pSPIHandle, uint8_t AppEv)
+{
+
 }

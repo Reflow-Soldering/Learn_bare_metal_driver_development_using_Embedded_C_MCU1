@@ -176,4 +176,10 @@ void SPI_IRQHandling(SPI_Handle_t *pHandle);
 void SPI_ClearOVRFlag(SPI_RegDef_t *pSPIx);
 void SPI_CloseTransmission(SPI_Handle_t *pSPIx);
 void SPI_CloseReception(SPI_Handle_t *pSPIHandle);
+
+/*
+ * 콜백함수
+*/
+void SPI_ApplicationEventCallback(SPI_Handle_t *pSPIHandle, uint8_t AppEv);
+
 #endif /* INC_STM32F407XX_SPI_DRIVER_H_ */
