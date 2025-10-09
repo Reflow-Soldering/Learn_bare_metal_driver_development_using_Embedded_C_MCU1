@@ -314,7 +314,7 @@ void SPI_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi)
 		}
 	}
 }
-}
+
 
 /*********************************************************************
  * @함수명					-	SPI_IRQPriorityConfig
@@ -538,7 +538,7 @@ static void SPI_TxeInterrupt_handle(SPI_Handle_t *pSPIHandle)
 	// 2. CR1의 DFF 비트 확인
 	if(pSPIHandle->pSPIx->CR1 & (1<<SPI_CR1_DFF))
 	{
-		//16비트 설정 시
+		//16비트 DFF 설정 시
 		//1. DR에서 데이터 불러오기
 		pSPIHandle->pSPIx->DR = *((uint16_t *)pSPIHandle->pTxBuffer);
 		pSPIHandle->TxLen--;
@@ -547,6 +547,7 @@ static void SPI_TxeInterrupt_handle(SPI_Handle_t *pSPIHandle)
 	}
 	else
 	{
+		//8비트 DFF 설정시
 		pSPIHandle->pSPIx->DR = *pSPIHandle->pTxBuffer;
 		pSPIHandle->TxLen--;
 		pSPIHandle->pTxBuffer++;
