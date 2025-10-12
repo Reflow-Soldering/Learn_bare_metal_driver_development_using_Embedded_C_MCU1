@@ -1,0 +1,11 @@
+Src/009.SPI_Message_RCV_IT.o: ../Src/009.SPI_Message_RCV_IT.c \
+ H:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx.h \
+ H:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_gpio_driver.h \
+ H:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx.h \
+ H:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_spi_driver.h \
+ H:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_i2c_driver.h
+H:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx.h:
+H:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_gpio_driver.h:
+H:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx.h:
+H:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_spi_driver.h:
+H:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_i2c_driver.h:
