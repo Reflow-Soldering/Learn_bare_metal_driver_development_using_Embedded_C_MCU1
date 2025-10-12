@@ -109,7 +109,7 @@ typedef struct
  *		 For more information about the APIs check the function definitions
  ******************************************************************************************/
 /*
- * Peripheral Clock setup
+ * 클럭세팅
  */
 void I2C_PeriClockControl(I2C_RegDef_t *pI2Cx, uint8_t EnorDi);
 
