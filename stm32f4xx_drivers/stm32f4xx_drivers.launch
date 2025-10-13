@@ -11,6 +11,7 @@
     <booleanAttribute key="com.st.stm32cube.ide.mcu.debug.launch.enable_live_expr" value="true"/>
     <booleanAttribute key="com.st.stm32cube.ide.mcu.debug.launch.enable_swv" value="true"/>
     <intAttribute key="com.st.stm32cube.ide.mcu.debug.launch.formatVersion" value="2"/>
+    <booleanAttribute key="com.st.stm32cube.ide.mcu.debug.launch.incremental_flashing" value="false"/>
     <stringAttribute key="com.st.stm32cube.ide.mcu.debug.launch.ip_address_local" value="localhost"/>
     <booleanAttribute key="com.st.stm32cube.ide.mcu.debug.launch.limit_swo_clock.enabled" value="false"/>
     <stringAttribute key="com.st.stm32cube.ide.mcu.debug.launch.limit_swo_clock.value" value=""/>
@@ -35,7 +36,7 @@
     <stringAttribute key="com.st.stm32cube.ide.mcu.debug.stlink.frequency" value="0"/>
     <booleanAttribute key="com.st.stm32cube.ide.mcu.debug.stlink.halt_all_on_reset" value="false"/>
     <stringAttribute key="com.st.stm32cube.ide.mcu.debug.stlink.log_file" value="H:\udemy\MCU1\Learn_bare_metal_driver_development_using_Embedded_C_MCU1\stm32f4xx_drivers\Debug\st-link_gdbserver_log.txt"/>
-    <stringAttribute key="com.st.stm32cube.ide.mcu.debug.stlink.low_power_debug" value="enable"/>
+    <stringAttribute key="com.st.stm32cube.ide.mcu.debug.stlink.low_power_debug" value="disable"/>
     <stringAttribute key="com.st.stm32cube.ide.mcu.debug.stlink.max_halt_delay" value="2"/>
     <stringAttribute key="com.st.stm32cube.ide.mcu.debug.stlink.reset_strategy" value="connect_under_reset"/>
     <booleanAttribute key="com.st.stm32cube.ide.mcu.debug.stlink.stlink_check_serial_number" value="false"/>
@@ -56,7 +57,7 @@
     <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.jtagDeviceId" value="com.st.stm32cube.ide.mcu.debug.stlink"/>
     <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.pcRegister" value=""/>
     <intAttribute key="org.eclipse.cdt.debug.gdbjtag.core.portNumber" value="61234"/>
-    <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.runCommands" value=""/>
+    <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.runCommands" value="monitor arm semihosting enable"/>
     <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.setPcRegister" value="false"/>
     <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.setResume" value="true"/>
     <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.setStopAt" value="true"/>

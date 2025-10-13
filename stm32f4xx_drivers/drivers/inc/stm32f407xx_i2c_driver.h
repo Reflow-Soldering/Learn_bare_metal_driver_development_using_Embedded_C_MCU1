@@ -71,7 +71,7 @@ typedef struct
 
 
 /*
- * I2C related status flags definitions
+ * I2C에 적용된 상태 레지스터 매크로
  */
 #define I2C_FLAG_TXE   		( 1 << I2C_SR1_TXE)
 #define I2C_FLAG_RXNE   	( 1 << I2C_SR1_RXNE)
@@ -91,7 +91,7 @@ typedef struct
 
 
 /*
- * I2C application events macros
+ * I2C 어플리케이션 이벤트 상태 매크로
  */
 #define I2C_EV_TX_CMPLT  	 	0
 #define I2C_EV_RX_CMPLT  	 	1

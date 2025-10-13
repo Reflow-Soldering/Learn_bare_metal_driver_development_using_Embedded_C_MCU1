@@ -1,12 +1,11 @@
-drivers/src/stm32f407xx_i2c_driver.o: \
- ../drivers/src/stm32f407xx_i2c_driver.c \
- C:/repo/Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_i2c_driver.h \
+Src/011.I2C_MASTER_RX_TESTING.o: ../Src/011.I2C_MASTER_RX_TESTING.c \
  C:/repo/Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx.h \
  C:/repo/Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_gpio_driver.h \
+ C:/repo/Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx.h \
  C:/repo/Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_spi_driver.h \
  C:/repo/Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_i2c_driver.h
-C:/repo/Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_i2c_driver.h:
 C:/repo/Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx.h:
 C:/repo/Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_gpio_driver.h:
+C:/repo/Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx.h:
 C:/repo/Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_spi_driver.h:
 C:/repo/Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_i2c_driver.h:

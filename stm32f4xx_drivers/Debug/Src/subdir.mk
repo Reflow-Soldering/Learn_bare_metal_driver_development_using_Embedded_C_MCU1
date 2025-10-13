@@ -5,29 +5,29 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Src/009.SPI_Message_RCV_IT.c \
+../Src/011.I2C_MASTER_RX_TESTING.c \
 ../Src/syscalls.c \
 ../Src/sysmem.c 
 
 OBJS += \
-./Src/009.SPI_Message_RCV_IT.o \
+./Src/011.I2C_MASTER_RX_TESTING.o \
 ./Src/syscalls.o \
 ./Src/sysmem.o 
 
 C_DEPS += \
-./Src/009.SPI_Message_RCV_IT.d \
+./Src/011.I2C_MASTER_RX_TESTING.d \
 ./Src/syscalls.d \
 ./Src/sysmem.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
 Src/%.o Src/%.su Src/%.cyclo: ../Src/%.c Src/subdir.mk
-	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DSTM32 -DSTM32F407G_DISC1 -DSTM32F4 -DSTM32F407VGTx -c -I../Inc -I"H:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc" -I"H:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc" -I"C:/repo/Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@"
+	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DSTM32 -DSTM32F407G_DISC1 -DSTM32F4 -DSTM32F407VGTx -c -I../Inc -I"C:/repo/Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc" -I"H:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc" -I"C:/repo/Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@"
 
 clean: clean-Src
 
 clean-Src:
-	-$(RM) ./Src/009.SPI_Message_RCV_IT.cyclo ./Src/009.SPI_Message_RCV_IT.d ./Src/009.SPI_Message_RCV_IT.o ./Src/009.SPI_Message_RCV_IT.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su
+	-$(RM) ./Src/011.I2C_MASTER_RX_TESTING.cyclo ./Src/011.I2C_MASTER_RX_TESTING.d ./Src/011.I2C_MASTER_RX_TESTING.o ./Src/011.I2C_MASTER_RX_TESTING.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su
 
 .PHONY: clean-Src
 
