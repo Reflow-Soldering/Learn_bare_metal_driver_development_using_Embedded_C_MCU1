@@ -1,12 +1,11 @@
-drivers/src/stm32f407xx_spi_driver.o: \
- ../drivers/src/stm32f407xx_spi_driver.c \
- G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_spi_driver.h \
+Src/main.o: ../Src/main.c \
  G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx.h \
  G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_gpio_driver.h \
+ G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx.h \
  G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_spi_driver.h \
  G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_i2c_driver.h
-G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_spi_driver.h:
 G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx.h:
 G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_gpio_driver.h:
+G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx.h:
 G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_spi_driver.h:
 G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_i2c_driver.h:

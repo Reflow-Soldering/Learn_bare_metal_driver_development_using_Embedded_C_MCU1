@@ -26,7 +26,7 @@
 int main(void)
 {
     /* Loop forever */
-	for(;;);
+	for(;;)
 }
 
 void EXTI0_IRQHandler(void)
