@@ -59,8 +59,8 @@ all: main-build
 main-build: 001.\ Hello\ World.elf secondary-outputs
 
 # Tool invocations
-001.\ Hello\ World.elf 001.\ Hello\ World.map: $(OBJS) $(USER_OBJS) H:\udemy\MCU1\Learn_bare_metal_driver_development_using_Embedded_C_MCU1\001.\ Hello\ World\STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "001. Hello World.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"H:\udemy\MCU1\Learn_bare_metal_driver_development_using_Embedded_C_MCU1\001. Hello World\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="001. Hello World.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+001.\ Hello\ World.elf 001.\ Hello\ World.map: $(OBJS) $(USER_OBJS) G:\Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1\001.\ Hello\ World\STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "001. Hello World.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"G:\Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1\001. Hello World\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="001. Hello World.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

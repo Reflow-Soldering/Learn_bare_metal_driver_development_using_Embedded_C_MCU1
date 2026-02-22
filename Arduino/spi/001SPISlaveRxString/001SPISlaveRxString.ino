@@ -1,3 +1,14 @@
+/* SPI Slave Demo
+
+ *
+ * SPI pin numbers:
+ * SCK   13  // Serial Clock.
+ * MISO  12  // Master In Slave Out.
+ * MOSI  11  // Master Out Slave In.
+ * SS    10  // Slave Select . Arduino SPI pins respond only if SS pulled low by the master
+ *
+ 
+ */
 #include <SPI.h>
 #include<stdint.h>  
 #define SPI_SCK 13
@@ -75,3 +86,7 @@ void loop()
   Serial.print("Length:");
   Serial.println(dataLen);
 }
+
+
+   
+   

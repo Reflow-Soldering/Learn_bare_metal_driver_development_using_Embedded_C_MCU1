@@ -32,7 +32,7 @@ typedef struct
 	uint8_t 		*pTxBuffer; /* !< To store the app. Tx buffer address > */
 	uint8_t 		*pRxBuffer;	/* !< To store the app. Rx buffer address > */
 	uint32_t 		TxLen;		/* !< To store Tx len > */
-	uint32_t 		RxLen;		/* !< To store Tx len > */
+	uint32_t 		RxLen;		/* !< To store Rx len > */
 	uint8_t 		TxRxState;	/* !< To store Communication state > */
 	uint8_t 		DevAddr;	/* !< To store slave/device address > */
     uint32_t        RxSize;		/* !< To store Rx size  > */
@@ -140,8 +140,8 @@ uint8_t I2C_SlaveReceiveData(I2C_RegDef_t *pI2C);
  */
 void I2C_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi);
 void I2C_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority);
-void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle);
-void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle);
+void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle);	//EVENT 발생
+void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle);	//ERROR 발생
 
 
 /*

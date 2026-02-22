@@ -1,11 +1,15 @@
-Src/011.I2C_MASTER_RX_TESTING.o: ../Src/011.I2C_MASTER_RX_TESTING.c \
+Src/016.UART_CASE.o: ../Src/016.UART_CASE.c \
  G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx.h \
  G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_gpio_driver.h \
  G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx.h \
  G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_spi_driver.h \
- G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_i2c_driver.h
+ G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_i2c_driver.h \
+ G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_usart_driver.h \
+ G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_rcc_driver.h
 G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx.h:
 G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_gpio_driver.h:
 G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx.h:
 G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_spi_driver.h:
 G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_i2c_driver.h:
+G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_usart_driver.h:
+G:/Git_Learn_bare_metal_driver_development_using_Embedded_C_MCU1/stm32f4xx_drivers/drivers/inc/stm32f407xx_rcc_driver.h:

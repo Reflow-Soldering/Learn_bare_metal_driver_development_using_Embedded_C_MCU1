@@ -5,21 +5,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Src/011.I2C_MASTER_RX_TESTING.c \
-../Src/main.c \
-../Src/syscalls.c \
+../Src/016.UART_CASE.c \
 ../Src/sysmem.c 
 
 OBJS += \
-./Src/011.I2C_MASTER_RX_TESTING.o \
-./Src/main.o \
-./Src/syscalls.o \
+./Src/016.UART_CASE.o \
 ./Src/sysmem.o 
 
 C_DEPS += \
-./Src/011.I2C_MASTER_RX_TESTING.d \
-./Src/main.d \
-./Src/syscalls.d \
+./Src/016.UART_CASE.d \
 ./Src/sysmem.d 
 
 
@@ -30,7 +24,7 @@ Src/%.o Src/%.su Src/%.cyclo: ../Src/%.c Src/subdir.mk
 clean: clean-Src
 
 clean-Src:
-	-$(RM) ./Src/011.I2C_MASTER_RX_TESTING.cyclo ./Src/011.I2C_MASTER_RX_TESTING.d ./Src/011.I2C_MASTER_RX_TESTING.o ./Src/011.I2C_MASTER_RX_TESTING.su ./Src/main.cyclo ./Src/main.d ./Src/main.o ./Src/main.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su
+	-$(RM) ./Src/016.UART_CASE.cyclo ./Src/016.UART_CASE.d ./Src/016.UART_CASE.o ./Src/016.UART_CASE.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su
 
 .PHONY: clean-Src
 
